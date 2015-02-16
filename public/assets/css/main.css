@@ -1,0 +1,120 @@
+#content {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+#body-content {
+	margin-top: 30px;
+}
+
+#contentHeader {
+	
+}
+
+
+#alerts {
+	position: absolute;
+	top: 10px;
+	right: 30px;
+}
+
+
+
+#login {
+	background: #e7ebec url(../img/login-bg.png) 0 -15em repeat-x;
+	padding: 10em 0;
+	width: 100% !important;
+	max-width: 100%;
+}
+
+#login-content {
+	min-height: 300px;
+	display: block;
+	margin: 0 auto;
+	padding: 10px 15px;
+	background: #F5F5F5;
+	text-shadow: 0 1px #FFF;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-box-shadow: 0 1px 3px #333333;
+	-webkit-box-shadow: 0 1px 3px #333333;
+	-ms-box-shadow: 0 1px 3px #333333;
+	-o-box-shadow: 0 1px 3px #333333;
+	box-shadow: 0 1px 3px #333333;
+	border/*\**/: 1px solid #cccccc 9;
+}
+
+#login-content h1 {
+	color: #999;
+	background: url(../img/logo-nsi.png) 0 center no-repeat;
+	padding: 4px 0 4px 65px;
+	position: relative;
+	font-size: 12px;
+	margin: 0;
+}
+
+#login-content h1 span {
+	font-size: 24px;
+	color: #333;
+	display: block;
+}
+
+.separator {
+	display: block;
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #FFF;
+	height: 0;
+	margin: 5px 0;
+}
+
+textarea { height: auto; }
+
+table tr td {
+	font-size: 11px !important;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove {
+  display:block!important;
+}
+
+.kbd {
+	padding: 0.1875em 0.625em 0.25em;
+	font-family: inherit !important;
+	font-weight: bold !important;
+	background-color: orange;
+	color: white;
+}
+
+#gl {
+	padding: 0.1875em 0.625em 0.25em;
+	font-family: inherit !important;
+	font-weight: bold !important;
+	background-color: blue;
+	color: white;
+}
+
+#spinner {
+	position: fixed;
+	top: 0;
+	left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    background-color: rgba(33, 33,33,0.5);
+}
+
+#img_spinner {
+	position: fixed;
+	top: 150px;
+	left: 620px;
+}
+
+.sidebar {
+	height:100vh;
+	background-color: White;
+}
+
+
