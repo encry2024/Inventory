@@ -122,12 +122,12 @@ Route::get('getDeviceLog/{id}', function($id) {
 	$locationLog = DeviceLog::where('device_id', $id)->get();
 	foreach ($locationLog as $location_log) {
 		$json[] = array(
-			'id' => $location_log->id,
+			'id' 			=> $location_log->id,
 			'owner_name'	=> $location_log->location->lastname . ", " . $location_log->location->firstname,
-			'loc_name' 	=> $location_log->location->name,
-			'dev_name' 	=> $location_log->device->name,
+			'loc_name' 		=> $location_log->location->name,
+			'dev_name' 		=> $location_log->device->name,
 			'updated_at'	=> date('M d, Y [h:i A D]', strtotime($location_log->updated_at) ),
-			'events' 	=> $location_log->action_taken,
+			'events' 		=> $location_log->action_taken,
 			'device_id' 	=> $location_log->device_id,
 			'location_id' 	=> $location_log->location_id,
 		);
@@ -148,15 +148,15 @@ Route::get('fetch/{id}/location', function($id) {
 	foreach ($locations as $loc) {
 		if($loc->lastname != "" && $loc->firstname != "") {
 			$json[] = array(
-				'id' => $loc->id,
-				'lastname' => $loc->lastname,
+				'id' 		=> $loc->id,
+				'lastname' 	=> $loc->lastname,
 				'firstname' => $loc->firstname,
-				'name' => $loc->name,
+				'name' 		=> $loc->name,
 			);
 		} else {
 			$json[] = array(
-				'id' => $loc->id,
-				'name' => $loc->name,
+				'id' 	=> $loc->id,
+				'name' 	=> $loc->name,
 			);
 		}
 	}
@@ -175,11 +175,11 @@ Route::get('fetch/associations', function() {
 				$json[] = array(
 					"id" 			=> $device->id,
 					"category" 		=> $ctg->name,
-					"category_id" 		=> $ctg->id,
+					"category_id" 	=> $ctg->id,
 					"name" 			=> $device->name,
 					"location" 		=> $device->location->lastname . ", " . $device->location->firstname,
-					"location_id" 		=> $device->location_id,
-					"updated_at" 		=> date('M d, Y [h:i A D]', strtotime($device->updated_at)),
+					"location_id" 	=> $device->location_id,
+					"updated_at" 	=> date('M d, Y [h:i A D]', strtotime($device->updated_at)),
 				);
 			}
 		}
@@ -190,7 +190,7 @@ Route::get('fetch/associations', function() {
 //FETCH ALL AVAILABLE DEVICES
 Route::get('getAvailable/{id}', function( $id ) {
 	$json 		= array();
-	$devices 	= Device::where('category_id', $id)->where('status', "Normal")->where('status', 'ACTIVE')->where('status', 'Not Specified')->where('location_id', 0)->get();
+	$devices 	= Device::where('category_id', $id)->where('status', "Normal")->orWhere('status', 'ACTIVE')->orWhere('status', 'Not Specified')->Where('location_id', 0)->get();
 	foreach ($devices as $device) {
 		$json[] = array(
 			'id' 			=> $device->id,
@@ -226,9 +226,9 @@ Route::get('getChkOut/{id}', function( $id ) {
 	foreach ($devices as $device) {
 		if ($device->location_id != 0){
 			$json[] = array(
-				'id' 			=> $device->id,
+				'id' 				=> $device->id,
 				'location_id' 		=> $device->location_id,
-				'name' 			=> $device->name,
+				'name' 				=> $device->name,
 				'updated_at' 		=> date('M d, Y [h:i A D]', strtotime($device->updated_at) ),
 				'owner_name' 		=> $device->location->lastname . ", " . $device->location->firstname,
 	
@@ -274,47 +274,60 @@ Route::get('retrieve_location', function() {
 
 //FETCH ALL DEVICES
 Route::get('getDevice/{id}', function( $id ) {
+	$t = "";
+	$b = "";
 	$json = array();
 	$devices = Device::with('location')->where('category_id', $id)->get();
 	foreach ($devices as $device) {
-		//Get information of the device
-		$info =	Information::with('field')->where('device_id', $device->id)->get();
-		if ($device->location_id != 0) {
-			//Foreach information
-			foreach ($info as $i) {
-				//If the label of the information is NSI Tag
-				if ($i->field->category_label == "NSI Tag") {
+		//GET VALUE WITH BRAND CATEGORY_LABEL
+			$field = Field::where('category_id', $device->category_id)->first();
+
+			$f_t = $field->category_label == "NSI Tag" ? $field->id : "Use the get method";
+			return var_dump("Field Tag: " . $f_t);
+			$f_b = $field->category_label == "Brand" ? $field->id : "Use the get method";
+
+			
+
+
+			if ($device->location_id != 0) {
+				if ($device->location->lastname == NULL OR $device->location->firstname == NULL) {
 					//Display
 					$json[] = array(
 						'id' 				=> $device->id,
 						'location_id' 		=> $device->location_id,
-						'tag'				=> $i->value,
+						'tag'				=> $t,
 						'name' 				=> $device->name,
 						'updated_at' 		=> date('M d, Y [h:i A D]', strtotime($device->updated_at) ),
 						'status' 			=> $device->status,
-						'location_name' 	=> $device->location->name,
-						'owner_name'		=> $device->location->lastname . ", " . $device->location->firstname,
+						'owner_name'		=> $device->location->name,
+						'brand_name'		=> $b
 					);
-				}
-			}
-		} else {
-			//Foreach information
-			foreach ($info as $i) {
-				//If the label of the information is NSI Tag
-				if ($i->field->category_label == "NSI Tag") {
+				} else if ($device->location->name == NULL) {
+					//Display
 					$json[] = array(
 						'id' 				=> $device->id,
 						'location_id' 		=> $device->location_id,
+						'tag'				=> $t,
 						'name' 				=> $device->name,
-						'tag'				=> $i->value,
 						'updated_at' 		=> date('M d, Y [h:i A D]', strtotime($device->updated_at) ),
 						'status' 			=> $device->status,
-						'location_name' 	=> $device->availability,
+						'owner_name'		=> $device->location->lastname . " , " . $device->location->firstname,
+						'brand_name'		=> $b
 					);
-				} 
-			}
+				}
+			} else {
+				$json[] = array(
+					'id' 				=> $device->id,
+					'location_id' 		=> $device->location_id,
+					'tag'				=> $t,
+					'name' 				=> $device->name,
+					'updated_at' 		=> date('M d, Y [h:i A D]', strtotime($device->updated_at) ),
+					'status' 			=> $device->status,
+					'owner_name'		=> "Available",
+					'brand_name'		=> $b
+				);			
+			} 
 		}
-	}
 	return json_encode($json);
 });
 
@@ -352,17 +365,6 @@ Route::get('fetch/information', function() {
 			);
 		}
 	}
-	// foreach ($information as $info) {
-	// 	$device = Device::all();
-	// 	foreach ($device as $d) {
-	// 		$json[] = array(
-	// 			'id' 				=> $d->id,
-	// 			'description'		=> $d->name,
-	// 			'info' 				=> $info->value,
-	// 			'field'				=> $info->field->category_label,
-	// 		);
-	// 	}
-	// }
 	return json_encode($json);
 });
 
@@ -373,27 +375,60 @@ Route::get('fetch/information', function() {
 
 #POST
 Route::any('import/{id}/data', function( $id ) {
-	set_time_limit(300);
+	//Remove process time
+	set_time_limit(0);
+
+	//Get the file name
 	$file = Input::file( 'file' );
+
+	//move the file to storage/uploads folder with its original file name
 	$file->move(storage_path() . '/uploads', $file->getClientOriginalName());
 
+	//Load the sheet and convert it into array
 	$sheet = Excel::load( storage_path() . '/uploads/' . $file->getClientOriginalName())->toArray();
+	
+	//Get all fields that has category_id = $id
 	$fields = Field::where('category_id', $id)->get();
+
+	//For each row in sheet
 	foreach ($sheet as $row) {
+		//Get campaign of eac DIDs
+		$location_name = $row['Campaign'] == NULL ? 'Not Provided' : $row['Campaign'];
+
+		//firstOrNew - Search if the location name is already on the database
+		//if no; save.
+		$location = Location::firstOrNew(array (
+			'firstname'		=> '',
+			'lastname'		=> '',
+			'name'			=> $location_name
+		));
+		$location->save();
+
+		//Get the id of the new location
+		$loc_id = $location->id;
+
+		//[If shorthand] 
 		$status = $row['status']==NULL?'Not Specified':$row['status'];
+
+		//Check if $loc_id is null
+		//If yes, display id, else. display available
+		$availability = $loc_id == NULL ? 'Available' : 'Unavailable';
 		$device = Device::firstOrNew(array(
 			"category_id" 	=> $id,
-			"location_id" 	=> 0,
+			"location_id" 	=> $loc_id,
 			"name" 			=> $row['name'],
 			"status"		=> $status,
 			"comment"		=> "",
-			"availability"	=> ""
+			"availability"	=> $availability
 		));
 		$device->save();
+
 		$field_values = array();
 		foreach ($fields as $field) {
 			//create array of fields to be insert
 			$field_name = $field->category_label;
+
+			//Check if the arrays already exists
 			if(array_key_exists($field_name, $row)) {
 				$field_values[] = array(
 					'device_id' => $device->id,
@@ -420,7 +455,6 @@ Route::any('import/{id}/data', function( $id ) {
 				}
 			} 
 		}
-		// 
 	}
 	return Redirect::back();
 });
@@ -469,13 +503,13 @@ Route::post('dissociate/device/{id}', function( $id ) {
 	return Redirect::back()->with('notif', 'Success: Device was successfully dissociated.');
 });
 
-Route::post('item/{id}/delete', function($id) {
+Route::get('item/{id}/delete', function($id) {
 	//Search Item where id = $id
-	$item 		= Item::find($id);
+	$item 		= Category::find($id);
 	$item_name 	= $item->name;
 
 	//Delete each device that has item_id of $id
-	$devices = Device::where('item_id', $id)->get();
+	$devices = Device::where('category_id', $id)->get();
 	foreach ($devices as $device) {
 		$device->delete();
 	}
@@ -484,9 +518,9 @@ Route::post('item/{id}/delete', function($id) {
 	$audits = new Audit;
 	$audits->user = Auth::user()->username;
 	$audits->event = "Delete";
-	$audits->field = "Device";
-	$audits->object = 
-	$audits->history = Auth::user()->firstname ." ". Auth::user()->lastname . " has deleted the Item " .$item_name." and all its devices permanently.";
+	$audits->field = "Category";
+	$audits->object = $item_name;
+
 	$audits->save();
 	//Delete Item
 	$item->delete();

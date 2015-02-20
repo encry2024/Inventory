@@ -63,11 +63,12 @@ $(document).ready( function() {
 			//MDATAPROP - TBODY
 			"aoColumns": 
 			[
-				{"sTitle": "#", "mDataProp": "id", "sClass": "size-14"},
+				{"sTitle": "#", "mDataProp": "id", "sWidth": "50px","sClass": "size-14"},
 				{"sTitle": "Description", "sWidth": "150px", "mDataProp": "name"},
 				{"sTitle": "Tag", "sWidth": "150px", "mDataProp": "tag"},
+				{"sTitle": "Brand", "sWidth": "100", "mDataProp": "brand_name"},
 				{"sTitle": "Status", "sWidth": "130px","mDataProp": "status"},
-				{"sTitle": "Owner", "sWidth": "150px","mDataProp": "location_name"},
+				{"sTitle": "Owner", "sWidth": "150px","mDataProp": "owner_name"},
 
 			],
 			"aoColumnDefs": 
@@ -106,6 +107,15 @@ $(document).ready( function() {
 				{
 					"aTargets": [ 3 ], // Column to target
 					"mRender": function ( data, type, full ) {
+						// 'full' is the row's data object, and 'data' is this column's data
+						// e.g. 'full[0]' is the comic id, and 'data' is the comic title
+						return '<label class="size-14 dtem">' + full["brand_name"] + '</label>';
+					}
+				},
+
+				{
+					"aTargets": [ 4 ], // Column to target
+					"mRender": function ( data, type, full ) {
 					// 'full' is the row's data object, and 'data' is this column's data
 					// e.g. 'full[0]' is the comic id, and 'data' is the comic title
 						if ( full["status"] == "Retired"  ) {
@@ -124,14 +134,14 @@ $(document).ready( function() {
 					}
 				},
 				{
-					"aTargets": [ 4 ], // Column to target
+					"aTargets": [ 5 ], // Column to target
 					"mRender": function ( data, type, full ) {
 					// 'full' is the row's data object, and 'data' is this column's data
 					// e.g. 'full[0]' is the comic id, and 'data' is the comic title
 					if ( full["location_id"] != 0 ) {
-						if ( full["location_name"] != "" ) {
-							return '<label class="text-center size-14 alert-box radius warning alert-custom"> ' + full["location_name"] + '</label>';
-						} else {
+						if ( full["owner_name"] != "" ) {
+							return '<label class="text-center size-14 alert-box radius alert alert-custom"> ' + full["owner_name"] + '</label>';
+						} else if ( full["owner_name"] == "Not Provided" ) {
 							return '<label class="text-center size-14 alert-box radius warning alert-custom"> ' + full["owner_name"] + '</label>';
 						}
 					} else if ( full["status"] == "Retired" || full["status"] == "Defective" || full["status"] == "INACTIVE" ) {

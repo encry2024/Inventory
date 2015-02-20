@@ -29,7 +29,7 @@
 										<input type="text" value="Model" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
 										<input type="text" value="Serial Number" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
 										<input type="text" value="Product Key" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
-										<input type="text" value="NSI Inventory Tag" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
+										<input type="text" value="NSI Tag" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
 										<input type="text" id="dp1" value="Date Purchased" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
 										<input type="text" value="Order Number" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>
 										<input type="text" value="Purchased Cost" name="mytext[]" style=" margin-top: -0.5rem; margin-left: 15rem; " placeholder="Enter device data-field" readonly>

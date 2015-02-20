@@ -228,7 +228,7 @@ class Category extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public function availableDevices() {
-		return $this->devices()->where('location_id', '=', 0)->where('status', 'Normal', 'OR')->where('status','ACTIVE', 'OR')->where('status','Not Specified')->get();
+		return $this->devices()->where('location_id', '=', 0)->Where('status', 'Normal')->orWhere('status', 'ACTIVE')->get();
 	}
 
 	public function checkedOut() {
@@ -236,6 +236,6 @@ class Category extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public function disposed() {
-		return $this->devices()->where('status', 'Retired')->where('status', 'Defective')->where('status','INACTIVE')->get();
+		return $this->devices()->where('status', 'Retired')->orwhere('status', 'Defective')->orwhere('status','INACTIVE')->get();
 	}
 }

@@ -15,7 +15,7 @@ class CreateFieldTable extends Migration {
 		Schema::create('fields', function($table) {
 			$table->increments('id');
 			$table->integer('category_id')->unsigned();
-			$table->string('category_label', 20);
+			$table->string('category_label', 20)->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});

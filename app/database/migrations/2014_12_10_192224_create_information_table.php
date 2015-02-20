@@ -19,7 +19,7 @@ class CreateInformationTable extends Migration {
 			$table->increments('id');
 			$table->integer('device_id')->unsigned();
 			$table->integer('field_id')->unsigned();
-			$table->string('value');
+			$table->string('value')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
