@@ -236,6 +236,6 @@ class Category extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 	public function disposed() {
-		return $this->devices()->where('status', 'Retired')->orwhere('status', 'Defective')->orwhere('status','INACTIVE')->get();
+		return $this->devices()->where('status', 'Retired')->orWhere('status', 'Defective')->Where('status','INACTIVE')->get();
 	}
 }
